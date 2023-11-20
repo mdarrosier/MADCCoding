@@ -1,4 +1,6 @@
-#Rules
+# Conway's Game of Life
+
+## Rules (from wikipedia)
 The universe of the Game of Life is an infinite, two-eimensional orthogonal grid of square cells, each of which is in one of two possible states,
 live or dead (or populated and unpopulated, respectively).
 Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent.
@@ -15,24 +17,13 @@ births and deaths occur simultaneously, and the discrete moment at which this ha
 [nb 1] Each generation is a pure function of the preceding one.
 The rules continue to be applied repeatedly to create further generations.
 
-xxx    xxx
-xox -> xxx
-xxx    xxx
+
+## Things to improve once you/I get more familiar with C.
+
+[ ] Use a stuct to keep cell's status and live neighbor count.
+[ ] Implement using a Byte instead of array and have an 8x8 matrix? Reference bit to know if alive or dead.
+[ ] Add a randomizer, Add predifined patterns to chose from.
+[ ] Is there some sort of canvas we can leverage to rewrite the matrix instead of printing every state.
+[ ] Create a header file and move logic also a makefile
 
 
-xxo    xoo
-xoo -> xoo
-xxx    xoo
-
-xoo    xxx
-xoo -> oxx
-xoo    xxx
-
-xxx    xox
-ooo -> xox 
-xxx    xox
-
-
-
-
-[live(int),status(boolean)]

@@ -31,14 +31,16 @@ int main()
   matrix[4][4] = alive;
   matrix[4][5] = alive;
 
+  printf("START");
   draw(matrix,'n');
   
-  for(int i = 1; i <= 10; i++)
+  for(int i = 1; i <= 20; i++)
   {
     printf("round: %d",i);
     run(matrix,copy);
     draw(matrix,'n');
   }
+  printf("END");
 
 
   free_matrix(matrix);
@@ -262,6 +264,7 @@ int calculate_neighbors(char **matrix, int x, int y)
     return (char)live_neighbors;
   }
 
+  //just in case there is an uncaught scenario.
   return 'e';
 }
 
