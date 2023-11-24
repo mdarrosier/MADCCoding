@@ -6,9 +6,9 @@ unsigned int get_value(char c)
 {
   if(islower(c))
   {
-	return c - 96;
+    return c - 96;
   }
-  
+
   return c - 64 + 26;
 }
 
@@ -18,31 +18,30 @@ void part_one(FILE *f)
   char line[50];
   while(fgets(line,50,f))
   {
-	int len = strlen(line) -1;
-	int half = (len/2) - 1;
-	char found[1] = {'-'};
+    int len = strlen(line) -1;
+    int half = (len/2) - 1;
+    char found[1] = {'-'};
 
-	for(int i = 0; i <= half; i++)
+    for(int i = 0; i <= half; i++)
+    {
+      for(int j = half+1; j < len; j++)
+      {
+	if(line[i] == line[j])
 	{
-	  for(int j = half+1; j < len; j++)
-	  {
-		if(line[i] == line[j])
-		{
-		  found[0] = line[i];
-		  break;
-		}
-	  }
-
-	  if(found[0] != '-')
-	  {
-		break;
-	  }
+	  found[0] = line[i];
+	  break;
 	}
+      }
 
-	sum += get_value(found[0]);
-	found[0] = '-';
+      if(found[0] != '-')
+      {
+	break;
+      }
+    }
+
+    sum += get_value(found[0]);
+    found[0] = '-';
   }
-
   //8088
   printf("Result : %d\n",sum);
 }
@@ -51,7 +50,7 @@ void reset_array(unsigned int arr[])
 {
   for(int i =0; i <= 52; i++)
   {
-	arr[i] = 0;
+    arr[i] = 0;
   }
 }
 
@@ -60,6 +59,12 @@ int get_bit(int pos)
   return pos == 0 ? 0x1 : pos == 1 ? 0x2 : 0x4;
 }
 
+int evaluate_char(unsigned int arr[],char c,unsigned int bit)
+{
+  int val = get_value(c);
+  arr[val] = arr[val] | bit;
+  return val;
+}
 
 void part_two(FILE *f)
 {
@@ -70,67 +75,59 @@ void part_two(FILE *f)
   int position = 0;
   while(fgets(line,50,f))
   {
-	int len = strlen(line) -1;
-	unsigned int bit = get_bit(position);
+    int len = strlen(line) -1;
+    unsigned int bit = get_bit(position);
 
-	if(position < 2)
+    if(position < 2)
+    {
+      for(int i = 0; i < len; i++)
+      {
+	evaluate_char(arr,line[i],bit);
+      }
+      position++;
+    }
+    else
+    {
+      for(int i = 0; i < len; i++)
+      {
+	int val = evaluate_char(arr,line[i],bit);
+	if(arr[val] == 7)
 	{
-	  for(int i = 0; i < len; i++)
-	  {
-		int val = get_value(line[i]);
-		arr[val] = arr[val] | bit;
-	  }
-	  position++;
+	  sum += val;
+	  reset_array(arr);
+	  break;
 	}
-	else
-	{
-	  for(int i = 0; i < len; i++)
-	  {
-		int val = get_value(line[i]);
-		arr[val] = arr[val] | bit;
-		if(arr[val] == 7)
-		{
-		  sum += val;
-		  reset_array(arr);
-		  break;
-		}
-	  }
-	  position = 0;
-	}
-
+      }
+      position = 0;
+    }
   }
-
   //Result: 2522
   printf("Result : %d\n",sum);
-
 }
 
 int main()
 {
-  FILE *f = fopen("input.txt","r");
-
   char o;
   printf("options: [1] for part 1 or [2] for part 2: ");
   o = getchar();
   if(o == '1' || o == '2')
   {
-	if(o == '1')
-	{
-	  part_one(f);
-	}
-	else if(o == '2')
-	{
-	  part_two(f);
-	}
+    FILE *f = fopen("input.txt","r");
+    if(o == '1')
+    {
+      part_one(f);
+    }
+    else if(o == '2')
+    {
+      part_two(f);
+    }
+    fclose(f);
   }
   else
   {
-	printf("\ninvalid option");
-	return 0;
+    printf("\ninvalid option");
+    return 0;
   }
-
-  //part_one(f);
-  fclose(f);
   return 0;
 }
 
