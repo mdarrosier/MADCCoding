@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 
-int get_value(char c)
+unsigned int get_value(char c)
 {
   if(islower(c))
   {
@@ -47,13 +47,89 @@ void part_one(FILE *f)
   printf("Result : %d\n",sum);
 }
 
+void reset_array(unsigned int arr[])
+{
+  for(int i =0; i <= 52; i++)
+  {
+	arr[i] = 0;
+  }
+}
+
+int get_bit(int pos)
+{
+  return pos == 0 ? 0x1 : pos == 1 ? 0x2 : 0x4;
+}
+
+
+void part_two(FILE *f)
+{
+  unsigned int arr[53];
+  reset_array(arr);
+  int sum = 0;
+  char line[50];
+  int position = 0;
+  while(fgets(line,50,f))
+  {
+	int len = strlen(line) -1;
+	unsigned int bit = get_bit(position);
+
+	if(position < 2)
+	{
+	  for(int i = 0; i < len; i++)
+	  {
+		int val = get_value(line[i]);
+		arr[val] = arr[val] | bit;
+	  }
+	  position++;
+	}
+	else
+	{
+	  for(int i = 0; i < len; i++)
+	  {
+		int val = get_value(line[i]);
+		arr[val] = arr[val] | bit;
+		if(arr[val] == 7)
+		{
+		  sum += val;
+		  reset_array(arr);
+		  break;
+		}
+	  }
+	  position = 0;
+	}
+
+  }
+
+  //Result: 2522
+  printf("Result : %d\n",sum);
+
+}
+
 int main()
 {
   FILE *f = fopen("input.txt","r");
 
-  part_one(f);
+  char o;
+  printf("options: [1] for part 1 or [2] for part 2: ");
+  o = getchar();
+  if(o == '1' || o == '2')
+  {
+	if(o == '1')
+	{
+	  part_one(f);
+	}
+	else if(o == '2')
+	{
+	  part_two(f);
+	}
+  }
+  else
+  {
+	printf("\ninvalid option");
+	return 0;
+  }
 
-
+  //part_one(f);
   fclose(f);
   return 0;
 }
