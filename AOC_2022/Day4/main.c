@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 void reset_num(char arr[])
 {
   arr[0] = '\0';
